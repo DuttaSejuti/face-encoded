@@ -14,7 +14,11 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 def get_sync_db_url() -> str:
     if DATABASE_URL:
         return DATABASE_URL
-    return f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+
+    return (
+        f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}"
+        f"@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+    )
 
 def get_async_db_url() -> str:
     return get_sync_db_url().replace("postgresql://", "postgresql+asyncpg://")
