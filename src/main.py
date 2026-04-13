@@ -1,8 +1,5 @@
 from fastapi import FastAPI
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from src.app.core.config import PROJECT_NAME, API_V1_STR, get_async_db_url
-
-engine = create_async_engine(get_async_db_url())
 
 app = FastAPI(
     title=PROJECT_NAME,
