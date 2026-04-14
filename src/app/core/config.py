@@ -1,6 +1,8 @@
 import os
+from dotenv import load_dotenv
 
-# Central place for passwords/URLs. Reads from environment.
+load_dotenv()
+
 PROJECT_NAME = "Face Encoding Service"
 API_V1_STR = "/v1"
 
@@ -21,4 +23,5 @@ def get_sync_db_url() -> str:
     )
 
 def get_async_db_url() -> str:
-    return get_sync_db_url().replace("postgresql://", "postgresql+asyncpg://")
+    sync_url = get_sync_db_url()
+    return sync_url.replace("postgresql://", "postgresql+asyncpg://", 1)
