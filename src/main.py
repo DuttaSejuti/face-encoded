@@ -1,10 +1,13 @@
 from fastapi import FastAPI
-from src.app.core.config import PROJECT_NAME, API_V1_STR, get_async_db_url
+from src.app.core.config import PROJECT_NAME, API_V1_STR
+from src.app.api.v1 import sessions
 
 app = FastAPI(
     title=PROJECT_NAME,
-    openapi_url=f"{API_V1_STR}/openapi.json"
+    openapi_url=f"{API_V1_STR}/openapi.json",
 )
+
+app.include_router(sessions.router, prefix=f"{API_V1_STR}/sessions", tags=["sessions"])
 
 @app.get("/")
 def root():
