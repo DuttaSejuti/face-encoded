@@ -9,7 +9,7 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-class Session(Base):
+class SessionModel(Base):
     __tablename__ = "sessions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, nullable=False)
