@@ -67,18 +67,21 @@ async def upload_session_image(
     if not vectors:
         raise InvalidImageError("No faces detected in uploaded image")
 
-    image = ImageModel(
-        session_id=session_id,
-        filename=resolved_filename,
-        content_type=content_type,
-    )
-    db.add(image)
-    await db.flush()
+    try:
+        image = ImageModel(
+            session_id=session_id,
+            filename=resolved_filename,
+            content_type=content_type,
+        )
+        db.add(image)
+        await db.flush()
 
-    for vector in vectors:
-        db.add(FaceEncodingModel(image_id=image.id, vector=vector))
-
-    await db.commit()
+        for vector in vectors:
+            db.add(FaceEncodingModel(image_id=image.id, vector=vector))
+        await db.commit()
+    except Exception:
+        await db.rollback()
+        raise
 
     image_query = (
         select(ImageModel)
