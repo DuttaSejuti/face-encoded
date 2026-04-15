@@ -12,7 +12,7 @@ os.environ["DATABASE_URL"] = os.getenv(
 )
 
 from src.db.session import engine
-from src.db.models import SessionModel
+from src.db.models import FaceEncodingModel, ImageModel, SessionModel
 from sqlalchemy import delete
 
 
@@ -34,6 +34,8 @@ def apply_migrations():
 @pytest_asyncio.fixture(autouse=True)
 async def clean_sessions():
     async with engine.begin() as conn:
+        await conn.execute(delete(FaceEncodingModel))
+        await conn.execute(delete(ImageModel))
         await conn.execute(delete(SessionModel))
 
     yield
