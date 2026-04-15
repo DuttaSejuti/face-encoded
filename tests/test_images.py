@@ -113,7 +113,7 @@ async def test_upload_image_rejects_oversized_file(monkeypatch):
 
         response = await ac.post(
             f"/v1/sessions/{session_id}/images",
-            files={"file": ("big.jpg", b"x" * (10 * 1024 * 1024 + 1), "image/jpeg")},
+            files={"file": ("big.jpg", b"x" * (5 * 1024 * 1024 + 1), "image/jpeg")},
         )
 
     assert response.status_code == 400
