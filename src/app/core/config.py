@@ -7,6 +7,7 @@ PROJECT_NAME = "Face Encoding Service"
 API_V1_STR = "/v1"
 FACE_ENCODING_SERVICE_URL = os.getenv("FACE_ENCODING_SERVICE_URL", "http://localhost:8000")
 MAX_IMAGE_SIZE_BYTES = int(os.getenv("MAX_IMAGE_SIZE_BYTES", str(5 * 1024 * 1024)))
+MAX_IMAGE_PER_SESSION = int(5)
 
 POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
