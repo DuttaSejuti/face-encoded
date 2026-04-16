@@ -29,3 +29,12 @@ class ImageResponse(BaseModel):
     content_type: str
     created_at: datetime
     encodings: List[FaceEncodingResponse]
+
+
+class SessionSummaryResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    session_id: UUID
+    total_images: int
+    total_faces: int
+    encodings: List[List[float]]

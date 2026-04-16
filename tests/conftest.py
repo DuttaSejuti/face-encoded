@@ -39,3 +39,10 @@ async def clean_sessions():
         await conn.execute(delete(SessionModel))
 
     yield
+
+
+@pytest_asyncio.fixture
+async def db_session():
+    from src.db.session import SessionLocal
+    async with SessionLocal() as session:
+        yield session
