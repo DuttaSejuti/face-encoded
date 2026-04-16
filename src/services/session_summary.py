@@ -2,9 +2,10 @@ from uuid import UUID
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.db.models import FaceEncodingModel, ImageModel, SessionModel
-from src.services.session_images import SessionNotFoundError
+from src.schemas import SessionSummaryResponse
+from src.services.errors import SessionNotFoundError
 
-async def get_session_summary(db: AsyncSession, session_id: UUID):
+async def get_session_summary(db: AsyncSession, session_id: UUID) -> SessionSummaryResponse:
     session = await db.get(SessionModel, session_id)
     if session is None:
         raise SessionNotFoundError("Session not found")
@@ -25,9 +26,9 @@ async def get_session_summary(db: AsyncSession, session_id: UUID):
     enc_result = await db.execute(enc_query)
     vectors = enc_result.scalars().all()
 
-    return {
-        "session_id": session_id,
-        "total_images": total_images,
-        "total_faces": len(vectors),
-        "encodings": vectors
-    }
+    return SessionSummaryResponse(
+        session_id=session_id,
+        total_images=total_images,
+        total_faces=len(vectors),
+        encodings=vectors,
+    )

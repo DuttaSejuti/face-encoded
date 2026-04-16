@@ -39,4 +39,5 @@ class FaceEncodingClient:
         raise FaceEncodingServiceError("Face encoding service returned an unexpected response.")
 
 
-encoding_client = FaceEncodingClient()
+def get_face_encoding_client() -> FaceEncodingClient:
+    return FaceEncodingClient()
