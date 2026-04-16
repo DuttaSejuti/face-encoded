@@ -1,9 +1,6 @@
 from typing import List
-
 import httpx
-
 from src.app.core.config import FACE_ENCODING_SERVICE_URL
-
 
 class FaceEncodingServiceError(Exception):
     pass
@@ -42,4 +39,5 @@ class FaceEncodingClient:
         raise FaceEncodingServiceError("Face encoding service returned an unexpected response.")
 
 
-encoding_client = FaceEncodingClient()
+def get_face_encoding_client() -> FaceEncodingClient:
+    return FaceEncodingClient()

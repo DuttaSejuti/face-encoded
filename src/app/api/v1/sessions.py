@@ -5,12 +5,10 @@ from src.db.session import get_db
 from src.db.models import SessionModel
 from src.schemas import ImageResponse, SessionResponse
 from src.services.face_encoding import FaceEncodingServiceError
-from src.services.session_images import (
-    ImageLimitExceededError,
-    InvalidImageError,
-    SessionNotFoundError,
-    upload_session_image,
-)
+from src.schemas import SessionSummaryResponse
+from src.services.errors import ImageLimitExceededError, InvalidImageError, SessionNotFoundError
+from src.services.session_images import upload_session_image
+from src.services.session_summary import get_session_summary
 
 router = APIRouter()
 
@@ -45,3 +43,11 @@ async def upload_image(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except FaceEncodingServiceError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
+
+
+@router.get("/{session_id}/summary", response_model=SessionSummaryResponse)
+async def get_summary(session_id: UUID, db: AsyncSession = Depends(get_db)):
+    try:
+        return await get_session_summary(db, session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc      

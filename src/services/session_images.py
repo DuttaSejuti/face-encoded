@@ -1,34 +1,11 @@
 from uuid import UUID
-
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-
 from src.app.core.config import MAX_IMAGE_SIZE_BYTES, MAX_IMAGE_PER_SESSION
 from src.db.models import FaceEncodingModel, ImageModel, SessionModel
-from src.services.face_encoding import encoding_client
-
-"""
-except SessionNotFoundError → 404
-except InvalidImageError → 400
-except FaceEncodingServiceError → 502
-"""
-
-class SessionImageError(Exception):
-    pass
-
-
-class SessionNotFoundError(SessionImageError):
-    pass
-
-
-class InvalidImageError(SessionImageError):
-    pass
-
-
-class ImageLimitExceededError(SessionImageError):
-    pass
-
+from src.services.errors import ImageLimitExceededError, InvalidImageError, SessionNotFoundError
+from src.services.face_encoding import get_face_encoding_client
 
 async def upload_session_image(
     db: AsyncSession,
@@ -58,7 +35,8 @@ async def upload_session_image(
         raise InvalidImageError("Uploaded file exceeds maximum allowed size")
 
     resolved_filename = filename or "upload-image"
-    vectors = await encoding_client.get_encodings(
+    face_encoding_client = get_face_encoding_client()
+    vectors = await face_encoding_client.get_encodings(
         image_content=content,
         filename=resolved_filename,
         content_type=content_type,

@@ -39,3 +39,27 @@ async def clean_sessions():
         await conn.execute(delete(SessionModel))
 
     yield
+
+
+@pytest_asyncio.fixture
+async def db_session():
+    from src.db.session import SessionLocal
+    async with SessionLocal() as session:
+        yield session
+
+
+@pytest_asyncio.fixture
+async def client():
+    from httpx import ASGITransport, AsyncClient
+    from src.main import app
+    async with AsyncClient(
+        transport=ASGITransport(app=app),
+        base_url="http://test"
+    ) as ac:
+        yield ac
+
+
+@pytest_asyncio.fixture
+async def session_id(client):
+    resp = await client.post("/v1/sessions/")
+    return resp.json()["id"]
