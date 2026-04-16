@@ -20,7 +20,7 @@ async def get_session_summary(db: AsyncSession, session_id: UUID):
         select(FaceEncodingModel.vector)
         .join(ImageModel)
         .where(ImageModel.session_id == session_id)
-        .order_by(FaceEncodingModel.id)
+        .order_by(FaceEncodingModel.created_at)
     )
     enc_result = await db.execute(enc_query)
     vectors = enc_result.scalars().all()

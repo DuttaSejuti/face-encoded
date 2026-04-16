@@ -1,9 +1,6 @@
 from typing import List
-
 import httpx
-
 from src.app.core.config import FACE_ENCODING_SERVICE_URL
-
 
 class FaceEncodingServiceError(Exception):
     pass

@@ -1,9 +1,7 @@
 from uuid import UUID
-
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-
 from src.app.core.config import MAX_IMAGE_SIZE_BYTES, MAX_IMAGE_PER_SESSION
 from src.db.models import FaceEncodingModel, ImageModel, SessionModel
 from src.services.face_encoding import encoding_client
