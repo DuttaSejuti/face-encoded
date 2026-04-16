@@ -123,9 +123,3 @@ The API accepts one uploaded image file and returns a list of 128-dimensional fa
 - Uploaded image binaries are processed in memory and only metadata plus face encodings are persisted.
 - Encodings are stored as JSONB arrays in PostgreSQL.
 
-## Possible Improvements
-
-- Remove the remaining `pytest-asyncio` event loop deprecation warning in the test setup.
-- Add an optional end-to-end integration test that runs against the real Veriff face-encoding container.
-- Extend the session summary response to group encodings by image if richer traceability is needed later.
-- Move upload processing to a background workflow if lower request latency or higher throughput becomes important.
