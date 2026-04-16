@@ -51,7 +51,8 @@ async def upload_image(
 
 @router.get("/{session_id}/summary", response_model=SessionSummaryResponse)
 async def get_summary(session_id: UUID, db: AsyncSession = Depends(get_db)):
-    summary = await get_session_summary(db, session_id)
-    if not summary:
+    try:
+        return await get_session_summary(db, session_id)
+    except SessionNotFoundError as exc:
         raise HTTPException(status_code=404, detail="Session not found")
-    return summary
+        
